@@ -79,7 +79,16 @@ p{margin:0}
 /* ---------- hero ---------- */
 .hero{position:relative;height:100svh;min-height:640px;padding:12px;}
 .hero .frame{position:relative;height:100%;border-radius:var(--r-lg);overflow:hidden;background:#e9e5df url(img/marble-poster.webp) center/cover}
-.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06);animation:heroz 2.4s var(--ease) .6s forwards}
+.hs{position:absolute;inset:0;opacity:0;transition:opacity 1.4s var(--ease)}.hs.on{opacity:1}
+.hs video,.hs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hs img{transform:scale(1.08);transition:transform 8s linear}.hs.on img{transform:scale(1)}
+.hero video{transform:scale(1.06);animation:heroz 2.4s var(--ease) .6s forwards}
+.dashes{display:flex;gap:8px}.dashes button{width:46px;height:22px;border:0;background:transparent;cursor:pointer;padding:0;display:flex;align-items:center}
+.dashes i{display:block;width:100%;height:2px;background:rgba(28,24,20,.2);position:relative;overflow:hidden}
+.dashes i::after{content:"";position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:right}
+.dashes [aria-selected=true] i::after{animation:dash 7s linear forwards}
+.dashes.paused [aria-selected=true] i::after{animation-play-state:paused}
+@keyframes dash{to{transform:scaleX(1)}}
 @keyframes heroz{to{transform:scale(1)}}
 .hero .frame::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 85% 70%,rgba(246,241,234,.88),rgba(246,241,234,.35) 55%,rgba(246,241,234,.1))}
 .hero .tx{position:absolute;z-index:2;inset-inline:clamp(22px,6vw,96px);bottom:clamp(90px,14vh,150px)}
@@ -148,6 +157,14 @@ section{position:relative}
 .slide:hover .go{transform:rotate(-45deg)}
 .slide .go svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.3;transform:scaleX(-1)}
 
+.use .head{margin-bottom:40px}.use h2{font-size:clamp(36px,4.6vw,70px)}
+.ug{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.uc{display:flex;flex-direction:column;gap:10px}
+.uc .mask{display:block;aspect-ratio:3/4;border-radius:var(--r-lg)}
+.uc .mask img{width:100%;height:100%;object-fit:cover}
+.uc:hover .mask img{transform:scale(1.04)}
+.uc b{font:500 22px var(--serif);margin-top:8px}.uc>span:last-child{font-size:14px;color:var(--taupe)}
+@media (max-width:1020px){.ug{grid-template-columns:repeat(2,minmax(0,1fr))}.uc .mask{aspect-ratio:4/5}}
 /* ---------- spotlight ---------- */
 .spot{background:var(--paper);margin-top:clamp(96px,13vw,190px);padding-block:clamp(80px,10vw,150px);overflow:hidden}
 .spot .stage{display:grid;grid-template-columns:1fr minmax(260px,520px) 1fr;align-items:center;gap:24px}
@@ -356,16 +373,18 @@ footer{margin-top:clamp(96px,13vw,190px);border-top:1px solid var(--line);paddin
 <main id="top">
   <section class="hero" aria-labelledby="h1">
     <div class="frame">
-      <video id="heroV" autoplay muted loop playsinline preload="auto" poster="img/marble-poster.webp" aria-hidden="true"><source src="media/marble.mp4" type="video/mp4"></video>
-      <div class="top"><span class="lat">Al Radwan · Est. Giza</span><span class="lat">N° 01 — Carrara</span></div>
+      <div class="hs on" data-n="Carrara" data-t="رخام كرارة، في حركة"><video id="heroV" autoplay muted loop playsinline preload="auto" poster="img/marble-poster.webp" aria-hidden="true"><source src="media/marble.mp4" type="video/mp4"></video></div>
+      <div class="hs" data-n="Wood" data-t="دفء الخشب في المعيشة"><img src="img/room-cedar.webp" alt="" width="1400" height="784"></div>
+      <div class="hs" data-n="Outdoor" data-t="بورسلين للتراس والحديقة"><img src="img/room-travis.webp" alt="" width="1400" height="784"></div>
+      <div class="top"><span class="lat">Al Radwan · Est. Giza</span><span class="lat" id="hsN">N° 01 — Carrara</span></div>
       <div class="tx">
         <h1 id="h1"><span class="l"><span>الفخامة</span></span><span class="l"><span>تبدأ من السطح.</span></span></h1>
         <p class="sub">سيراميك وبورسلين وأدوات صحية من أرقى الدور المحلية والعالمية، نختارها بعناية ونقدّمها لكم في ثلاثة معارض.</p>
         <div class="cta"><a class="btn dark" href="#collections">اكتشف المجموعات</a><a class="btn line" href="#concierge">احجز موعدًا خاصًا</a></div>
       </div>
       <div class="meta">
-        <span class="scroll-cue"><i></i>مرّر للاكتشاف</span>
-        <button class="pp" type="button" id="heroP" aria-label="إيقاف الفيديو"><span class="t">رخام كرارة، في حركة</span><span class="c"><svg viewBox="0 0 12 12" id="ppI"><rect x="2" y="1" width="2.6" height="10"/><rect x="7.4" y="1" width="2.6" height="10"/></svg></span></button>
+        <div class="dashes" role="tablist" aria-label="مشاهد الواجهة"><button type="button" role="tab" aria-label="الرخام" aria-selected="true"><i></i></button><button type="button" role="tab" aria-label="الخشب" aria-selected="false"><i></i></button><button type="button" role="tab" aria-label="الخارجي" aria-selected="false"><i></i></button></div>
+        <button class="pp" type="button" id="heroP" aria-label="إيقاف الفيديو"><span class="t" id="hsT">رخام كرارة، في حركة</span><span class="c"><svg viewBox="0 0 12 12" id="ppI"><rect x="2" y="1" width="2.6" height="10"/><rect x="7.4" y="1" width="2.6" height="10"/></svg></span></button>
       </div>
     </div>
   </section>
@@ -401,6 +420,16 @@ footer{margin-top:clamp(96px,13vw,190px);border-top:1px solid var(--line);paddin
     </div>
   </section>
 
+
+  <section class="use sec wrap" aria-labelledby="h-use">
+    <div class="head"><div><p class="eyebrow rv">حسب الاستخدام</p><h2 id="h-use" class="rv" style="margin-top:18px">لكل مساحة خامتها.</h2></div></div>
+    <div class="ug">
+      <a class="uc rv" href="#selection" data-f="tiles"><span class="mask"><img src="img/room-calacatta.webp" alt="سطح رخامي داكن بعروق بيضاء" width="1400" height="700" loading="lazy"></span><b>الأرضيات والحوائط</b><span>بورسلين وسيراميك بمقاسات حتى ١٢٠×٢٤٠</span></a>
+      <a class="uc rv d1" href="#selection" data-f="bath"><span class="mask"><img src="img/room-emperador.webp" alt="حمام بحائط رخام بني ومرآة مضيئة" width="1400" height="788" loading="lazy"></span><b>الحمّامات</b><span>أطقم وأحواض وبانيوهات وخلاطات</span></a>
+      <a class="uc rv d2" href="#selection" data-f="mixers"><span class="mask"><img src="img/room-kitchen.webp" alt="مطبخ عصري بسطح عمل رمادي" width="1280" height="720" loading="lazy"></span><b>المطابخ</b><span>أحواض ستانلس وخلاطات مطبخ</span></a>
+      <a class="uc rv d3" href="#selection" data-f="tiles"><span class="mask"><img src="img/room-travis.webp" alt="تراس بأرضية بورسلين رمادي" width="1400" height="784" loading="lazy"></span><b>المساحات الخارجية</b><span>بورسلين مطفأ للتراس والحديقة</span></a>
+    </div>
+  </section>
   <section class="spot" aria-labelledby="h-spot">
     <div class="wrap">
       <p class="eyebrow rv" style="justify-content:center" id="h-spot">قطعة الموسم</p>
@@ -548,6 +577,16 @@ const hv=$("#heroV"),hp=$("#heroP");
 if(RM){hv.removeAttribute("autoplay");hv.pause()}
 hp.onclick=()=>{if(hv.paused){hv.play();hp.setAttribute("aria-label","إيقاف الفيديو");$("#ppI").innerHTML='<rect x="2" y="1" width="2.6" height="10"/><rect x="7.4" y="1" width="2.6" height="10"/>'}else{hv.pause();hp.setAttribute("aria-label","تشغيل الفيديو");$("#ppI").innerHTML='<path d="M2 1l9 5-9 5z"/>'}};
 
+
+/* hero chapters */
+(()=>{const hs=$$(".hs"),ds=$$(".dashes button"),box=$(".dashes");let cur=0,t;const D=7000;
+ const show=i=>{cur=i;hs.forEach((h,j)=>h.classList.toggle("on",j===i));ds.forEach((d,j)=>{d.setAttribute("aria-selected",j===i);const k=d.querySelector("i");k.style.animation="none";void k.offsetWidth;k.style.animation=""});
+  $("#hsN").textContent="N° 0"+(i+1)+" — "+hs[i].dataset.n;$("#hsT").textContent=hs[i].dataset.t;
+  if(i===0&&!RM&&!box.classList.contains("paused"))hv.play().catch(()=>{});else if(i!==0)hv.pause();
+  clearTimeout(t);if(!RM&&!box.classList.contains("paused"))t=setTimeout(()=>show((cur+1)%hs.length),D)};
+ ds.forEach((d,i)=>d.onclick=()=>show(i));
+ hp.onclick=()=>{const p=box.classList.toggle("paused");hp.setAttribute("aria-label",p?"تشغيل":"إيقاف");$("#ppI").innerHTML=p?'<path d="M2 1l9 5-9 5z"/>':'<rect x="2" y="1" width="2.6" height="10"/><rect x="7.4" y="1" width="2.6" height="10"/>';if(p){clearTimeout(t);hv.pause()}else show(cur)};
+ if(!RM)t=setTimeout(()=>show(1),D)})();
 /* reveal */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
 $$(".rv,.mask").forEach(el=>io.observe(el));
@@ -588,7 +627,7 @@ const card=p=>`<article class="card"><div class="ph"><img ${p.category==="tiles"
 const render=f=>{$("#grid").innerHTML=PICK.map(id=>byId[id]).filter(p=>p&&(f==="all"||grp(p)===f)).slice(0,8).map(card).join("")};
 $("#filters").onclick=e=>{const b=e.target.closest("button");if(!b)return;$$("#filters button").forEach(x=>x.setAttribute("aria-pressed",x===b));render(b.dataset.f)};
 render("all");
-$$(".slide").forEach(s=>s.addEventListener("click",()=>{const f=s.dataset.f;const b=$(`#filters [data-f="${f}"]`);b&&b.click()}));
+$$(".slide,.uc").forEach(s=>s.addEventListener("click",()=>{const f=s.dataset.f;const b=$(`#filters [data-f="${f}"]`);b&&b.click()}));
 
 /* cart */
 const cart=new Map();const toast=t=>{const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("on"),2200)};
